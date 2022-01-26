@@ -31,7 +31,67 @@ def create_login_wind(con):
     lab_status.configure(foreground="red")
     lab_status.configure(text='''---''')
     
-
+#------------------------Functions------------------------------  
+    def exitt():
+        login_window.destroy()
+    
+    def helpp():
+        messagebox.showinfo(
+                "How to Login",
+                '''      
+                Enter valid Admin ID or Employee ID 
+                and correct password and click Login''')
+                
+    def about():
+        messagebox.showinfo(
+                'About','''
+                    Easy Payroll
+                    Version : 1.0
+                    Last Update : 17/06/2021
+                    Developers :-
+                       S Gopi
+                       Kaushik
+                    Special Thanks : Dr. Nachiyappan Sir
+                    
+                    Support us by Donating!!!''')
+    
+    def clear():
+        username.set(0)
+        password.set('')
+        lab_status.configure(text = '---')
+        
+    def login():
+        username.set(username.get().strip())
+        password.set(password.get().strip())
+        if username.get() and rad_role.get():
+            if not username.get().isdigit():
+                lab_status.configure(text = 'Enter a Valid Username!')
+                return None
+            if rad_role.get() == 'a':
+                query = "select password from username where id = {} and user_role = '{}'".format(username.get(),rad_role.get())
+            else:
+                query = "select password from username where id = {} and user_role = '{}'".format(username.get(),rad_role.get())
+            cursor.execute(query)
+            ret_pass = cursor.fetchall()
+        else:
+            lab_status.configure(text = 'Enter Username and select User Role!')
+            return None
+            
+        if ret_pass:
+            if password.get() == ret_pass[0][0]:
+                exitt()
+                if rad_role.get() == 'a':
+                    aw.create_admin_wind(con,username.get())
+                else:
+                    ew.create_emp_wind(con,username.get())
+            else:
+                lab_status.configure(text = 'Incorrect password!')
+        else:
+            if rad_role.get() == 'a':
+                lab_status.configure(text = 'Administrator not registered!')
+            else:
+                lab_status.configure(text = 'Employee not registered!')
+            return None
 
 #------------------------Menu------------------------------             
     menubar = tk.Menu(login_window)
