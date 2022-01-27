@@ -4,7 +4,8 @@ import regex as r
 import tkinter as tk
 from tkinter import messagebox
 
-
+def enable_but():
+    but_show.configure(state = 'normal')
     
 def create_emp_wind(con,eid):
     global but_show
@@ -34,7 +35,59 @@ def create_emp_wind(con,eid):
     lab_status.configure(foreground="red")
     lab_status.configure(text='''---''')
     
+#------------------------Functions------------------------------       
+    def exitt():
+        emp_window.destroy()
+        lw.create_login_wind(con)
+    
+    def clear():
+        newpsw.set('')
+        conf_newpsw.set('')
+        lab_status.configure(text = '---')
+        
+    def helpp():
+        messagebox.showinfo(
+                "How to Update Password",
+                '''      
+                New password must contain (minimun):
+                            8 characters
+                            1 uppercase
+                            1 lowercase
+                            1 number
+                            1 special character''')
+        
+    def show():
+        but_show.configure(state = 'disabled')
+        sw.create_show_wind(emp_window,con,eid,emp_data[0][1],emp_data[0][5],emp_data[0][6],'emp_wind')    
+        # but_show.configure(state = 'normal')  
+        # enable_but() #both these methods didnt work, dont know why!
+    
+    def update_psw():
+        newpsw.set(newpsw.get().strip())
+        conf_newpsw.set(conf_newpsw.get().strip())
+        if newpsw.get() != conf_newpsw.get():
+            lab_status.configure(text='Entered passwords do not match')
+            return None            
+        elif not (r.search('[a-z]+',newpsw.get()) and r.search('[A-Z]+',newpsw.get()) and r.search('[0-9]+',newpsw.get()) and r.search('[^a-zA-Z0-9]+',newpsw.get()) and len(newpsw.get()) >= 8):
+            helpp()  
+            clear()
+            return None
+        query = "update username set password = '{}' where id = {} and user_role = 'e'".format(newpsw.get(),emp_data[0][0])
+        cursor.execute(query)
+        clear()
+        lab_status.configure(text='Password updated successfully!')
+        return None
+    
+    # def disable_forced_exit():
+        '''just an empty function like this will also disable 
+        the window close button on top right corner'''
+    #     pass
 
+    def disable_forced_exit():
+        messagebox.showinfo(
+                "Window Close Button Disabled",
+                '''      
+                Please Logout properly for safety reasons !!!''') 
     
 #------------------------Menu------------------------------   
     menubar = tk.Menu(emp_window)
@@ -247,8 +300,3 @@ def create_emp_wind(con,eid):
 
 # if __name__ == '__main__':
 #     create_emp_wind()
-
-
-
-
-
