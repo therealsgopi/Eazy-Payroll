@@ -19,7 +19,35 @@ def create_show_wind(parent_window,con,eid,ename,accno,aid,emp_win = ''):
     show_img_lab.configure(background="#e7eaf6")
     show_window.iconbitmap(r'resources\icon.ico')
     
+#------------------------Functions------------------------------       
+    def exitt():
+        show_window.destroy()
+        if emp_win:
+            ew.enable_but()
+        else:
+            aw.update_emp_current_show_list(eid)
+            aw.enable_emp_modification()
+    
+    def helpp():
+        messagebox.showinfo(
+                "For Any Queries",
+                '''      
+                Contact your:
+                        Admin
+                        Branch
+                        Company''')
+    
+    
+    # def disable_forced_exit():
+        '''just an empty function like this will also disable 
+        the window close button on top right corner'''
+    #     pass
 
+    def disable_forced_exit():
+        messagebox.showinfo(
+                "Window Close Button Disabled",
+                '''      
+                Please click on Close !!!''') 
 
 #------------------------Menu------------------------------   
     menubar = tk.Menu(show_window)
@@ -185,14 +213,51 @@ def create_show_wind(parent_window,con,eid,ename,accno,aid,emp_win = ''):
     but_close.configure(text='''Close''')
     but_close.configure(command = exitt)
     
+#------------------------Displaying Preliminary Data----------------------
+    query = "select * from salary where account_no = {}".format(accno)
+    cursor.execute(query)
+    sal_data = cursor.fetchall()
+    
+    query = '''select c_name from company c inner join branch b on c.c_id = b.c_id 
+            inner join administrator a on b.b_id = a.b_id where a_id = {}'''.format(aid)
+    cursor.execute(query)
+    comp = cursor.fetchall()
+    
+    query = '''select b_name from branch b inner join administrator a 
+            on b.b_id = a.b_id where a_id = {}'''.format(aid)
+    cursor.execute(query)
+    branch = cursor.fetchall()
+    
+    label_0.configure(text=ename)
+    lab_comp_show.configure(text=comp[0][0])
+    lab_branch_show.configure(text=branch[0][0])
+    lab_eid_show.configure(text=eid)
+    lab_accno_show.configure(text=accno)
+    lab_basic_show.configure(text=sal_data[0][1])
+    lab_hra_show.configure(text=sal_data[0][3])
+    lab_ta_show.configure(text=sal_data[0][4])
+    lab_da_show.configure(text=sal_data[0][5])
+    lab_med_show.configure(text=sal_data[0][2])
+    lab_inc_show.configure(text=sal_data[0][6])    
+    
+    '''to disable the window close button on top right corner so that 
+    users use only the custom close options defined in the window'''
+    show_window.protocol("WM_DELETE_WINDOW", disable_forced_exit)
+    
+    '''or we can repurpose the window close button on top right corner and make it run the custom 
+    exitt function defined whenever the window close button on top right corner is clicked'''
+    # show_window.protocol("WM_DELETE_WINDOW", exitt)
+    
+    '''or just use a empty/dummy inline function like this to achieve the same'''
+    # show_window.protocol("WM_DELETE_WINDOW", lambda: 'pass')
+    
+    '''or disable the complete title bar including icon, title, 
+    minimize, maximize and close options'''
+    # show_window.overrideredirect(True)
+    
     show_window.mainloop()
     cursor.close()  
     return None
 
 # if __name__ == '__main__':
 #     create_show_wind()
-
-
-
-
-
