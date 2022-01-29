@@ -36,11 +36,25 @@ def create_admin_wind(con,aid,clear_emp_data = False):
     lab_status.configure(font="-family {Arial} -size 10 -weight bold")
     lab_status.configure(foreground="red")
     lab_status.configure(text='''---''')
-    
 
+# ------------------------Combobox-------------------------    
+    combo_results = ttk.Combobox(admin_window)
+    combo_results.place(relx=0.322, rely=0.644, relheight=0.032, relwidth=0.372)
+    combo_results.configure(foreground="#000000")
+    combo_results.configure(font="-family {Arial} -size 10")
+    combo_results.configure(background="#e7eaf6")
+    combo_data()  
+    combo_results.configure(textvariable = combo_sel)
+    # combo_results.configure(postcommand = combo_update)
+    combo_results.current(0)
+    combo_results.bind("<<ComboboxSelected>>", combo_selection)
+    combo_results['state'] = 'readonly'
 
+#------------------------Menu------------------------------   
+    menubar = tk.Menu(admin_window)
+    admin_window.configure(menu = menubar)
+    menubar.add_command(label="Help",command = helpp)
 
-    
 #------------------------Labels------------------------------ 
     label_0 = tk.Label(admin_window)
     label_0.place(relx=0.062, rely=0.01, height=48, width=568)
