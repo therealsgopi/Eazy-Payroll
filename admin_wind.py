@@ -5,7 +5,16 @@ import tkinter as tk
 from tkinter import messagebox
 import tkinter.ttk as ttk
 
+def update_emp_current_show_list(eid):
+        emp_current_show_list.remove(eid)
 
+def enable_emp_modification():
+        # to re-establish employee modification priviliges after his/her data viewing is closed
+        if emp_current_show_list:
+            return None
+        but_create['state'] = 'normal'
+        but_update['state'] = 'normal'
+        but_delete['state'] = 'normal'
         
 def create_admin_wind(con,aid,clear_emp_data = False):
     global emp_current_show_list,but_create,but_update,but_delete
@@ -37,6 +46,18 @@ def create_admin_wind(con,aid,clear_emp_data = False):
     lab_status.configure(foreground="red")
     lab_status.configure(text='''---''')
 
+#------------------------Functions------------------------------       
+    def exitt():
+        admin_window.destroy()
+    
+    def helpp():
+        messagebox.showinfo(
+                "For Any Queries",
+                '''      
+                Contact your:
+                        Branch
+                        Company''')
+                        
 # ------------------------Combobox-------------------------    
     combo_results = ttk.Combobox(admin_window)
     combo_results.place(relx=0.322, rely=0.644, relheight=0.032, relwidth=0.372)
