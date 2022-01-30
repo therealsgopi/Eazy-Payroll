@@ -313,6 +313,21 @@ def create_admin_wind(con,aid,clear_emp_data = False):
     lab_aid_show.configure(text=aid)
     lab_ad_phno_show.configure(text=admin_data[0][2])
 
+    '''to disable the window close button on top right corner so that 
+    users use only the custom close options defined in the window'''
+    admin_window.protocol("WM_DELETE_WINDOW", disable_forced_exit)
+    
+    '''or we can repurpose the window close button on top right corner and make it run the custom 
+    exitt function defined whenever the window close button on top right corner is clicked'''
+    # admin_window.protocol("WM_DELETE_WINDOW", exitt)
+    
+    '''or just use a empty/dummy inline function like this to achieve the same'''
+    # admin_window.protocol("WM_DELETE_WINDOW", lambda: 'pass')
+    
+    '''or disable the complete title bar including icon, title, 
+    minimize, maximize and close options'''
+    # admin_window.overrideredirect(True)
+
     admin_window.mainloop()
     cursor.close()  
     return None
