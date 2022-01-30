@@ -291,7 +291,27 @@ def create_admin_wind(con,aid,clear_emp_data = False):
     but_logout.configure(text='''Logout''') 
     but_logout.configure(command = logout)
     
-
+#------------------------Displaying Preliminary Data----------------------    
+    query = "select * from administrator where a_id = {}".format(aid)
+    cursor.execute(query)
+    admin_data = cursor.fetchall()
+    
+    query = '''select c_name from company c inner join branch b on c.c_id = b.c_id 
+            inner join administrator a on b.b_id = a.b_id where a_id = {}'''.format(aid)
+    cursor.execute(query)
+    comp = cursor.fetchall()
+    
+    query = '''select b_name from branch b inner join administrator a 
+            on b.b_id = a.b_id where a_id = {}'''.format(aid)
+    cursor.execute(query)
+    branch = cursor.fetchall()
+    
+    admin_window.title("Welcome " + admin_data[0][1])
+    label_0.configure(text='Admin : ' + admin_data[0][1])
+    lab_comp_show.configure(text=comp[0][0])
+    lab_branch_show.configure(text=branch[0][0])
+    lab_aid_show.configure(text=aid)
+    lab_ad_phno_show.configure(text=admin_data[0][2])
 
     admin_window.mainloop()
     cursor.close()  
