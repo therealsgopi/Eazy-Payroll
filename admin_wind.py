@@ -57,6 +57,50 @@ def create_admin_wind(con,aid,clear_emp_data = False):
                 Contact your:
                         Branch
                         Company''')
+
+    def confirmation(operation):
+        title = 'Employee {} Confirmation'.format(operation)
+        question = "Do you really want to {} Employee '{}' with ID '{}'?".format(operation[:5]+'e',emp_data[0][1],emp_data[0][0])
+        decision = messagebox.askquestion(title,question)
+        return decision
+    
+    def diable_emp_modification():
+        # to prevent employee modification when his/her details are being viewed
+        but_create['state'] = 'disabled'
+        but_update['state'] = 'disabled'
+        but_delete['state'] = 'disabled'
+    
+    def combo_values(data):
+        global combo_val
+        combo_val = []
+        for i in combo_disp:
+            combo_val.append(str(i[0]) + ' - ' + i[1])
+        combo_val.sort()
+        combo_val.insert(0,'Please select an employee to act on')
+        combo_update()
+        
+    def combo_data(data = 'all',sear = None):
+        global combo_disp
+        if data == 'all':
+            query = '''select e_id,e_name from employee'''
+        elif data == 'ID':
+            if not sear.isdigit():
+                lab_status.configure(text='Enter a Valid Employee ID!!!')
+                return False
+            query = "select e_id,e_name from employee where e_id like '%{}%'".format(sear)
+        else:
+            if not sear.isalpha():
+                lab_status.configure(text='Enter a Valid Employee ID!!!')
+                return False
+            query = "select e_id,e_name from employee where e_name like '%{}%'".format(sear)
+        cursor.execute(query)
+        combo_disp = cursor.fetchall()
+        combo_values(data)
+        return True
+        
+    def combo_update():
+        combo_results['values'] = combo_val
+        combo_results.current(0)
                         
 # ------------------------Combobox-------------------------    
     combo_results = ttk.Combobox(admin_window)
@@ -355,8 +399,3 @@ def create_admin_wind(con,aid,clear_emp_data = False):
 
 # if __name__ == '__main__':
 #     create_admin_wind()
-
-
-
-
-
