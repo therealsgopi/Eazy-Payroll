@@ -45,7 +45,7 @@ def create_admin_wind(con,aid,clear_emp_data = False):
     lab_status.configure(font="-family {Arial} -size 10 -weight bold")
     lab_status.configure(foreground="red")
     lab_status.configure(text='''---''')
-
+    
 #------------------------Functions------------------------------       
     def exitt():
         admin_window.destroy()
@@ -57,7 +57,7 @@ def create_admin_wind(con,aid,clear_emp_data = False):
                 Contact your:
                         Branch
                         Company''')
-
+    
     def confirmation(operation):
         title = 'Employee {} Confirmation'.format(operation)
         question = "Do you really want to {} Employee '{}' with ID '{}'?".format(operation[:5]+'e',emp_data[0][1],emp_data[0][0])
@@ -101,7 +101,134 @@ def create_admin_wind(con,aid,clear_emp_data = False):
     def combo_update():
         combo_results['values'] = combo_val
         combo_results.current(0)
-                        
+
+    def combo_selection(event):
+        global emp_data
+        lab_status.configure(text='---')
+        if combo_results.current() == 0:
+            clear()
+            return None
+        query = "select * from employee where e_id = {}".format(combo_sel.get().split('-')[0][:-1]) 
+        cursor.execute(query)
+        emp_data = cursor.fetchall()
+        
+        query = "select basic from salary where account_no = {}".format(emp_data[0][5])
+        cursor.execute(query)
+        basic = cursor.fetchall()
+        
+        if rad_search.get() == 'ID':
+            lab_eid_name_show.configure(text = emp_data[0][1])
+        else:
+            lab_eid_name_show.configure(text = emp_data[0][0])
+            
+        lab_dept_show.configure(text = emp_data[0][2])
+        lab_desig_show.configure(text = emp_data[0][3])
+        lab_phno_show.configure(text = emp_data[0][4])
+        lab_accno_show.configure(text = emp_data[0][5])
+        lab_basic_show.configure(text = basic)            
+    
+    def if_emp_selected():
+        # just to check if a employee is selected or not - tries to access a value of emp_data
+        try:
+            temp = emp_data[0][0]
+            return True
+        except:
+            return False
+        
+    def search_but():
+        clear(0)
+        search.set(search.get().strip())
+        if not (search.get() and rad_search.get()):
+            lab_status.configure(text='Enter E_Name or E_ID and choose correspomding option!')
+            return None
+        if combo_data(rad_search.get(),search.get()):
+            lab_eid_name.configure(text="Employee " + ('Name' if rad_search.get() == 'ID' else 'ID') + " : ")
+            if combo_disp:
+                lab_status.configure(text = str(len(combo_disp)) + ' Employees found!')
+            else:
+                lab_status.configure(text='Sorry, no employees found!')
+            
+    
+    def show():
+        if not if_emp_selected():
+            lab_status.configure(text='Please select an employee to act on!')   
+            return None
+        if emp_data[0][0] not in emp_current_show_list:
+            emp_current_show_list.append(emp_data[0][0])
+            diable_emp_modification()
+            sw.create_show_wind(admin_window,con,emp_data[0][0],emp_data[0][1],emp_data[0][5],emp_data[0][6])
+        else:
+            lab_status.configure(text='Already showing the selected employee!')   
+    
+    # to clear the current selection in emp_data when returned from create/update window!
+    if clear_emp_data:
+        emp_data.clear()
+            
+    def delete():
+        # think about cascade delete or deleting records in all tables individually?
+        '''cascade delete wont work coz employee table is not parent table for salary,username tables'''
+        # think about taking confirmation from user thru a message box or a new tkinter window specifically for that?
+        '''since there is an ready made option, i will take confirmation using messagebox itself'''
+        if not if_emp_selected():
+            lab_status.configure(text='Please select an employee to act on!')   
+            return None
+        if confirmation('Deletion') == 'no':
+            lab_status.configure(text='Operation cancelled!')     
+            return None
+        query = "delete from employee where e_id = {}".format(emp_data[0][0])
+        cursor.execute(query)
+        query = "delete from salary where account_no = {}".format(emp_data[0][5])
+        cursor.execute(query)
+        query = "delete from username where id = {} and user_role = 'e'".format(emp_data[0][0])
+        cursor.execute(query)
+        combo_val.remove(combo_sel.get())
+        combo_update()
+        clear(0)
+        lab_status.configure(text="Employee successfully Deleted!!!")     
+    
+    def clear(condition = 1):
+        global emp_data
+        combo_results.current(0) # to reset selection of combobox to index 0 whenever search button is clicked
+        lab_eid_name_show.configure(text='')
+        lab_dept_show.configure(text='')
+        lab_desig_show.configure(text='')
+        lab_phno_show.configure(text='')
+        lab_accno_show.configure(text='')
+        lab_basic_show.configure(text='')
+        lab_status.configure(text='''---''')
+        emp_data = []
+        if condition:
+            lab_eid_name.configure(text='Employee ID :')
+            combo_data()
+            rad_search.set('')
+            search.set('')
+            
+    def create():
+        exitt()
+        cuw.create_creup_wind(con,aid,'Creation')   
+    
+    def update():
+        if not if_emp_selected():
+            lab_status.configure(text='Please select an employee to act on!')   
+            return None
+        exitt()
+        cuw.create_creup_wind(con,aid,'Updation',emp_data[0][0],emp_data[0][1],emp_data[0][5])   
+        
+    def logout():
+        admin_window.destroy()
+        lw.create_login_wind(con)
+    
+    # def disable_forced_exit():
+        '''just an empty function like this will also disable 
+        the window close button on top right corner'''
+    #     pass
+
+    def disable_forced_exit():
+        messagebox.showinfo(
+                "Window Close Button Disabled",
+                '''      
+                Please Logout properly for safety reasons !!!''')
+
 # ------------------------Combobox-------------------------    
     combo_results = ttk.Combobox(admin_window)
     combo_results.place(relx=0.322, rely=0.644, relheight=0.032, relwidth=0.372)
@@ -119,7 +246,7 @@ def create_admin_wind(con,aid,clear_emp_data = False):
     menubar = tk.Menu(admin_window)
     admin_window.configure(menu = menubar)
     menubar.add_command(label="Help",command = helpp)
-
+    
 #------------------------Labels------------------------------ 
     label_0 = tk.Label(admin_window)
     label_0.place(relx=0.062, rely=0.01, height=48, width=568)
@@ -377,7 +504,7 @@ def create_admin_wind(con,aid,clear_emp_data = False):
     lab_branch_show.configure(text=branch[0][0])
     lab_aid_show.configure(text=aid)
     lab_ad_phno_show.configure(text=admin_data[0][2])
-
+    
     '''to disable the window close button on top right corner so that 
     users use only the custom close options defined in the window'''
     admin_window.protocol("WM_DELETE_WINDOW", disable_forced_exit)
