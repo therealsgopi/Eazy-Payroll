@@ -234,7 +234,56 @@ def create_creup_wind(con,aid,operation,eid_org = 0,ename_org = '',accno_org = 0
     but_cancel.configure(foreground="white")
     but_cancel.configure(text='''Cancel''')
     
+#-----------------Setting Window Function and Displaying Preliminary Data-----------------
+    if operation == 'Creation':
+        creup_window.title("Creating New Employee")
+        label_0.configure(text='New Employee')
+        but_creup.configure(text='Create')
+        but_creup.configure(command = create)
+        lab_status.configure(text='''Employee ID and Account Number are internally generated and cannot be modified''')
+        set_new_eid_accno()
+    else:
+        creup_window.title("Updating " + ename_org)
+        label_0.configure(text='Employee : ' + ename_org)
+        but_creup.configure(text='Update')
+        but_creup.configure(command = update)
+        lab_status.configure(text='''Employee ID and Account Number cannot be modified''')
+        
+        query = "select department,designation,phone_no from employee where e_id = {}".format(eid_org)
+        cursor.execute(query)
+        emp_data = cursor.fetchall()
+        
+        query = "select * from salary where account_no = {}".format(accno_org)
+        cursor.execute(query)
+        emp_sal_data = cursor.fetchall()
+        
+        eid.set(eid_org)
+        ename.set(ename_org)
+        dept.set(emp_data[0][0])
+        desig.set(emp_data[0][1])
+        phno.set(emp_data[0][2])
+        accno.set(accno_org)
+        basic.set(emp_sal_data[0][1])
+        med.set(emp_sal_data[0][2])
+        hra.set(emp_sal_data[0][3])
+        ta.set(emp_sal_data[0][4])
+        da.set(emp_sal_data[0][5])
+        inc.set(emp_sal_data[0][6])
 
+    '''to disable the window close button on top right corner so that 
+    users use only the custom close options defined in the window'''
+    creup_window.protocol("WM_DELETE_WINDOW", disable_forced_exit)
+    
+    '''or we can repurpose the window close button on top right corner and make it run the custom 
+    exitt function defined whenever the window close button on top right corner is clicked'''
+    # creup_window.protocol("WM_DELETE_WINDOW", exitt)
+    
+    '''or just use a empty/dummy inline function like this to achieve the same'''
+    # creup_window.protocol("WM_DELETE_WINDOW", lambda: 'pass')
+    
+    '''or disable the complete title bar including icon, title, 
+    minimize, maximize and close options'''
+    # creup_window.overrideredirect(True)
     
     creup_window.mainloop()
     cursor.close()  
