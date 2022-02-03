@@ -34,7 +34,84 @@ def create_creup_wind(con,aid,operation,eid_org = 0,ename_org = '',accno_org = 0
     lab_status.configure(font="-family {Arial} -size 10 -weight bold")
     lab_status.configure(foreground="red")
     
+#------------------------Functions------------------------------       
+    def exitt():
+        creup_window.destroy()
+        if operation == 'Updation':
+            aw.create_admin_wind(con,aid,True)
+        else:
+            aw.create_admin_wind(con,aid)
+        
+    def operation_fatal_error():
+        messagebox.showinfo(
+                "Fatal Error",
+                '''      
+                Employee {} failed due to unknown reasons! Please try again later'''.format(operation))
+        exitt()
+                
+    def clear():
+        ename.set('')
+        dept.set('')
+        desig.set('')
+        phno.set('')
+        basic.set('')
+        hra.set('')
+        ta.set('')
+        da.set('')
+        med.set('')
+        inc.set('')
+        lab_status.configure(text = '---')
+        
+    def helpp():
+        if operation == 'Creation':
+            messagebox.showinfo(
+                "How to Create an Employee",
+                '''      
+                Enter valid credentials of an
+                employee and click Done.
+                
+                Note: 
+                    Employee ID and Account Number are internally
+                    generated and cannot be modified!''')
+        else:
+            messagebox.showinfo(
+                "How to Update an Employee",
+                '''      
+                Modify the credentials of the
+                employee and click Done.
+                
+                Note: 
+                    Employee ID and Account Number
+                    cannot be modified!''')
+    
+    def set_new_eid_accno():
+        query = "select e_id,account_no from employee"
+        cursor.execute(query)
+        eid_accno_list = cursor.fetchall()
+        eid_list = [tup[0] for tup in eid_accno_list]
+        accno_list = [tup[1] for tup in eid_accno_list]
+        if eid_accno_list:
+            eid.set(max(eid_list) + 1)
+            accno.set(max(accno_list) + 1)
+        else:
+            eid.set(1001)
+            accno.set(100000000)
+            
+    def confirmation():
+        title = 'Employee {} Confirmation'.format(operation)
+        if operation == 'Creation':
+            question = "Do you really want to {} Employee '{}' with ID '{}'?".format(operation[:5]+'e',ename.get(),eid.get())
+        else:
+            question = "Do you really want to {} Employee with ID '{}'?".format(operation[:5]+'e',eid_org)
+        decision = messagebox.askquestion(title,question)
+        return decision
 
+    def text_field_verify(text):
+        text = list(text)
+        for char in text:
+            if not (char.isspace() or char.isalpha()):
+                return False
+        return True
     
 #------------------------Menu------------------------------   
     menubar = tk.Menu(creup_window)
