@@ -113,6 +113,53 @@ def create_creup_wind(con,aid,operation,eid_org = 0,ename_org = '',accno_org = 0
                 return False
         return True
     
+    def data_verify():
+        ename.set(ename.get().strip())
+        dept.set(dept.get().strip())
+        desig.set(desig.get().strip())
+        phno.set(phno.get().strip())
+        basic.set(basic.get().strip())
+        hra.set(hra.get().strip())
+        ta.set(ta.get().strip())
+        da.set(da.get().strip())
+        med.set(med.get().strip())
+        inc.set(inc.get().strip())
+        
+        if not all([ename.get(),dept.get(),desig.get(),phno.get(),basic.get(),hra.get(),ta.get(),da.get(),med.get(),inc.get()]):
+            lab_status.configure(text = 'Enter all the credentials!!!') 
+            return False  
+        elif not text_field_verify(ename.get()):
+            lab_status.configure(text = 'Enter a Valid Employee Name!!!') 
+            return False
+        elif not text_field_verify(dept.get()):
+            lab_status.configure(text = 'Enter a Valid Department!!!') 
+            return False
+        elif not text_field_verify(desig.get()):
+            lab_status.configure(text = 'Enter a Valid Designation!!!') 
+            return False
+        elif not (phno.get().isdigit() and 6000000000 <= int(phno.get()) <= 9999999999):
+            lab_status.configure(text = 'Enter a Valid Phone Number!!!') 
+            return False
+        elif not (basic.get().isdigit() and int(basic.get()) >= 100): # no basic salary can be less than 100 rupees
+            lab_status.configure(text = 'Enter a Valid Basic Pay which is at least 100 Rupees!!!') 
+            return False
+        elif not (hra.get().isdigit() and 0 <= int(hra.get()) < int(basic.get())):
+            lab_status.configure(text = 'Enter a Valid HRA Amount which does not exceed the Basic Pay!!!') 
+            return False
+        elif not (ta.get().isdigit() and 0 <= int(ta.get()) < int(basic.get())):
+            lab_status.configure(text = 'Enter a Valid TA Amount which does not exceed the Basic Pay!!!') 
+            return False
+        elif not (da.get().isdigit() and 0 <= int(da.get()) < int(basic.get())):
+            lab_status.configure(text = 'Enter a Valid DA Amount which does not exceed the Basic Pay!!!') 
+            return False
+        elif not (med.get().isdigit() and 0 <= int(med.get()) < int(basic.get())):
+            lab_status.configure(text = 'Enter a Valid Medical Allowance which does not exceed the Basic Pay!!!') 
+            return False
+        elif not (inc.get().isdigit() and 0 <= int(inc.get()) < int(basic.get())):
+            lab_status.configure(text = 'Enter a Valid Incentive which does not exceed the Basic Pay!!!') 
+            return False
+        return True
+    
 #------------------------Menu------------------------------   
     menubar = tk.Menu(creup_window)
     creup_window.configure(menu = menubar)
