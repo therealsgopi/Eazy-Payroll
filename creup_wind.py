@@ -160,6 +160,30 @@ def create_creup_wind(con,aid,operation,eid_org = 0,ename_org = '',accno_org = 0
             return False
         return True
     
+    def create():
+        if not data_verify():
+            return None
+        if confirmation() == 'no':
+            lab_status.configure(text='Creation cancelled!')     
+            return None
+        lab_status.configure(text = 'Creating new employee...')  
+        
+        try:             
+            query = "insert into employee values({},'{}','{}','{}',{},{},{})".format(eid.get(),ename.get(),dept.get(),desig.get(),phno.get(),accno.get(),aid)
+            cursor.execute(query)
+            query = "insert into salary values({},{},{},{},{},{},{},{})".format(accno.get(),basic.get(),med.get(),hra.get(),ta.get(),da.get(),inc.get(),aid)
+            cursor.execute(query)
+            query = "insert into username values({},'{}','{}')".format(eid.get(),accno.get(),'e')
+            cursor.execute(query)
+        except:
+            operation_fatal_error()
+        
+        messagebox.showinfo(
+                "Employee Created",
+                '''      
+                Successfully created New Employee '{}' with ID '{}'!!! '''.format(ename.get(),eid.get()))
+        exitt()
+    
 #------------------------Menu------------------------------   
     menubar = tk.Menu(creup_window)
     creup_window.configure(menu = menubar)
