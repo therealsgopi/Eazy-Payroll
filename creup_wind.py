@@ -184,6 +184,44 @@ def create_creup_wind(con,aid,operation,eid_org = 0,ename_org = '',accno_org = 0
                 Successfully created New Employee '{}' with ID '{}'!!! '''.format(ename.get(),eid.get()))
         exitt()
     
+    def update():
+        if not data_verify():
+            return None
+        if confirmation() == 'no':
+            lab_status.configure(text='Updation cancelled!')     
+            return None
+        lab_status.configure(text = 'Updating employee...')                
+
+        try:
+            query = "update employee set e_name = '{}' where e_id = {}".format(ename.get(),eid_org)
+            cursor.execute(query)
+            query = "update employee set department = '{}' where e_id = {}".format(dept.get(),eid_org)
+            cursor.execute(query)
+            query = "update employee set designation = '{}' where e_id = {}".format(desig.get(),eid_org)
+            cursor.execute(query)
+            query = "update employee set phone_no = {} where e_id = {}".format(phno.get(),eid_org)
+            cursor.execute(query)
+            query = "update salary set basic = {} where account_no = {}".format(basic.get(),accno_org)
+            cursor.execute(query)        
+            query = "update salary set med_allow = {} where account_no = {}".format(med.get(),accno_org)
+            cursor.execute(query)        
+            query = "update salary set hra = {} where account_no = {}".format(hra.get(),accno_org)
+            cursor.execute(query)        
+            query = "update salary set ta = {} where account_no = {}".format(ta.get(),accno_org)
+            cursor.execute(query)        
+            query = "update salary set da = {} where account_no = {}".format(da.get(),accno_org)
+            cursor.execute(query)    
+            query = "update salary set incentive = {} where account_no = {}".format(inc.get(),accno_org)
+            cursor.execute(query)        
+        except:
+            operation_fatal_error()
+        
+        messagebox.showinfo(
+                "Employee Updated",
+                '''      
+                Successfully Updated Employee with ID '{}' !!!'''.format(eid_org))
+        exitt()
+    
 #------------------------Menu------------------------------   
     menubar = tk.Menu(creup_window)
     creup_window.configure(menu = menubar)
