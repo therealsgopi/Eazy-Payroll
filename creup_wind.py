@@ -112,7 +112,7 @@ def create_creup_wind(con,aid,operation,eid_org = 0,ename_org = '',accno_org = 0
             if not (char.isspace() or char.isalpha()):
                 return False
         return True
-    
+      
     def data_verify():
         ename.set(ename.get().strip())
         dept.set(dept.get().strip())
@@ -158,8 +158,8 @@ def create_creup_wind(con,aid,operation,eid_org = 0,ename_org = '',accno_org = 0
         elif not (inc.get().isdigit() and 0 <= int(inc.get()) < int(basic.get())):
             lab_status.configure(text = 'Enter a Valid Incentive which does not exceed the Basic Pay!!!') 
             return False
-        return True
-    
+        return True          
+        
     def create():
         if not data_verify():
             return None
@@ -221,6 +221,17 @@ def create_creup_wind(con,aid,operation,eid_org = 0,ename_org = '',accno_org = 0
                 '''      
                 Successfully Updated Employee with ID '{}' !!!'''.format(eid_org))
         exitt()
+    
+    # def disable_forced_exit():
+        '''just an empty function like this will also disable 
+        the window close button on top right corner'''
+    #     pass
+    
+    def disable_forced_exit():
+        messagebox.showinfo(
+                "Window Close Button Disabled",
+                '''      
+                Please click on Cancel !!!''')
     
 #------------------------Menu------------------------------   
     menubar = tk.Menu(creup_window)
