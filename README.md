@@ -4,3 +4,17 @@ This project collects data of each employee in a particular organization and eff
 
 ## Technology
 The front-end GUI is built using TKinter module of Pyhton and for the back-end Database to store all the info, a Oracle RDBMS (Oracle Database 18c Express Edition) is used. 
+
+## How to RUN
+```sh
+git clone https://github.com/therealsgopi/Eazy-Payroll.git
+```
+Start with execution of "main.py"
+
+## Screenshots
+
+## GUI Windows' Flow
+
+## Modules' Flow
+
+## Backend DB Schema Design
