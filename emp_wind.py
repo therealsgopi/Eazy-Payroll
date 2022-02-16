@@ -3,6 +3,26 @@ import login_wind as lw
 import regex as r
 import tkinter as tk
 from tkinter import messagebox
+import os
+import sys
+    
+# ----------Defining path for resources when generating ONE exe file---------
+def resource_path(relative_path):
+    # Get absolute path to resource, works for dev and for PyInstaller
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+# -----------------OR------------------
+'''
+def resource_path(relative_path):
+    # Get absolute path to resource, works for dev and for PyInstaller
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+'''
 
 def enable_but():
     but_show.configure(state = 'normal')
@@ -17,11 +37,11 @@ def create_emp_wind(con,eid):
     # emp_window.title("Welcome Raghu Verma")
     emp_window.configure(background="#e7eaf6")
     
-    emp_img = tk.PhotoImage(file=r"resources\emp.png")
+    emp_img = tk.PhotoImage(file= resource_path(r"resources\emp.png"))
     emp_img_lab = tk.Label(emp_window,image = emp_img)
     emp_img_lab.place(relx=0.333, rely=0.075, height=200, width=204)
     emp_img_lab.configure(background="#e7eaf6")
-    emp_window.iconbitmap(r'resources\icon.ico')
+    emp_window.iconbitmap(resource_path(r'resources\icon.ico'))
     
 #------------------------Variables------------------------------  
     newpsw = tk.StringVar()

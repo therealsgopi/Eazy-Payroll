@@ -2,7 +2,27 @@ import admin_wind as aw
 import emp_wind as ew
 import tkinter as tk
 from tkinter import messagebox
+import os
+import sys
     
+# ----------Defining path for resources when generating ONE exe file---------
+def resource_path(relative_path):
+    # Get absolute path to resource, works for dev and for PyInstaller
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+# -----------------OR------------------
+'''
+def resource_path(relative_path):
+    # Get absolute path to resource, works for dev and for PyInstaller
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+'''
+
 def create_login_wind(con):
     cursor = con.cursor()    
     login_window = tk.Tk()
@@ -12,11 +32,11 @@ def create_login_wind(con):
     login_window.title("Eazy Payroll 1.0")
     login_window.configure(background="#e7eaf6")
     
-    login_img = tk.PhotoImage(file=r"resources\login.png")
+    login_img = tk.PhotoImage(file= resource_path(r"resources\login.png"))
     login_img_lab = tk.Label(login_window,image = login_img)
     login_img_lab.place(relx=0.333, rely=0.105, height=200, width=204)
     login_img_lab.configure(background="#e7eaf6")
-    login_window.iconbitmap(r'resources\icon.ico')
+    login_window.iconbitmap(resource_path(r'resources\icon.ico'))
     
 #------------------------Variables------------------------------      
     username = tk.StringVar()
