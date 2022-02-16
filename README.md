@@ -14,7 +14,7 @@ Start with execution of "main.py"
 ## Screenshots
 
 ## GUI Windows' Flow
-![gui_flow.png](https://github.com/therealsgopi/Eazy-Payroll/blob/main/pictures/gui_flow.png)
+![gui_flow.png](pictures/gui_flow.png)
 
 ## Modules' Flow
 ![modules_flow.png](https://github.com/therealsgopi/Eazy-Payroll/blob/main/pictures/modules_flow.png)
