@@ -2,6 +2,26 @@ import tkinter as tk
 from tkinter import messagebox
 import admin_wind as aw
 import emp_wind as ew
+import os
+import sys
+    
+# ----------Defining path for resources when generating ONE exe file---------
+def resource_path(relative_path):
+    # Get absolute path to resource, works for dev and for PyInstaller
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+# -----------------OR------------------
+'''
+def resource_path(relative_path):
+    # Get absolute path to resource, works for dev and for PyInstaller
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+'''
 
 def create_show_wind(parent_window,con,eid,ename,accno,aid,emp_win = ''):
     global comp
@@ -13,11 +33,11 @@ def create_show_wind(parent_window,con,eid,ename,accno,aid,emp_win = ''):
     show_window.title("Employee Salary Details")
     show_window.configure(background="#e7eaf6")
     
-    show_img = tk.PhotoImage(file=r"resources\show.png")
+    show_img = tk.PhotoImage(file= resource_path(r"resources\show.png"))
     show_img_lab = tk.Label(show_window,image = show_img)
     show_img_lab.place(relx=0.312, rely=0.09, height=219, width=202) 
     show_img_lab.configure(background="#e7eaf6")
-    show_window.iconbitmap(r'resources\icon.ico')
+    show_window.iconbitmap(resource_path(r'resources\icon.ico'))
     
 #------------------------Functions------------------------------       
     def exitt():
