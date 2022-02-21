@@ -5,6 +5,27 @@ import tkinter as tk
 from tkinter import messagebox
 import tkinter.ttk as ttk
 
+import os
+import sys
+    
+# ----------Defining path for resources when generating ONE exe file---------
+def resource_path(relative_path):
+    # Get absolute path to resource, works for dev and for PyInstaller
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+# -----------------OR------------------
+'''
+def resource_path(relative_path):
+    # Get absolute path to resource, works for dev and for PyInstaller
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+'''
+
 def update_emp_current_show_list(eid):
         emp_current_show_list.remove(eid)
 
@@ -26,11 +47,11 @@ def create_admin_wind(con,aid,clear_emp_data = False):
     # admin_window.title("Welcome John")
     admin_window.configure(background="#e7eaf6")
     
-    admin_img = tk.PhotoImage(file=r"resources\admin.png")
+    admin_img = tk.PhotoImage(file= resource_path(r"resources\admin.png"))
     admin_img_lab = tk.Label(admin_window,image = admin_img)
     admin_img_lab.place(relx=0.343, rely=0.088, height=205, width=205)
     admin_img_lab.configure(background="#e7eaf6")
-    admin_window.iconbitmap(r'resources\icon.ico')
+    admin_window.iconbitmap(resource_path(r'resources\icon.ico'))
     
 #------------------------Variables------------------------------  
     search = tk.StringVar()
