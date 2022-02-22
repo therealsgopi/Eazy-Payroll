@@ -1,6 +1,27 @@
 import admin_wind as aw
 import tkinter as tk 
 from tkinter import messagebox
+
+import os
+import sys
+    
+# ----------Defining path for resources when generating ONE exe file---------
+def resource_path(relative_path):
+    # Get absolute path to resource, works for dev and for PyInstaller
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+# -----------------OR------------------
+'''
+def resource_path(relative_path):
+    # Get absolute path to resource, works for dev and for PyInstaller
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+'''
     
 def create_creup_wind(con,aid,operation,eid_org = 0,ename_org = '',accno_org = 0):
     cursor = con.cursor() 
@@ -11,7 +32,7 @@ def create_creup_wind(con,aid,operation,eid_org = 0,ename_org = '',accno_org = 0
     # creup_window.title("Updating Raghu Verma")
     creup_window.configure(background="#e7eaf6")
     
-    creup_window.iconbitmap(r'resources\icon.ico')
+    creup_window.iconbitmap(resource_path(r'resources\icon.ico'))
 
 #------------------------Variables------------------------------ 
     eid = tk.StringVar()
