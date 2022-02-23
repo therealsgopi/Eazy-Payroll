@@ -19,4 +19,5 @@ Start with execution of "main.py"
 ## Modules' Flow
 ![modules_flow.png](https://github.com/therealsgopi/Eazy-Payroll/blob/main/pictures/modules_flow.png)
 
-## Backend DB Schema Design
+## Backend DB Schema Design - ER Diagram
+![er_diagram.png](pictures/er_diagram.png)
