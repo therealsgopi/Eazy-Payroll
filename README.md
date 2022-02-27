@@ -14,25 +14,25 @@ git clone https://github.com/therealsgopi/Eazy-Payroll.git
 3. Start the program by executing "main.py" first!
 
 ## Screenshots
-Login Window:
+### Login Window:
 ![gui1.jpg](pictures/gui1.jpg)
 
-Employee Dashboard & Show Window:
+### Employee Dashboard & Show Window:
 ![gui2.jpg](pictures/gui2.jpg)
 
-Default Close Button Disabled
+### Default Close Button Disabled:
 ![gui3.jpg](pictures/gui3.jpg)
 
-Admin Dashboard
+### Admin Dashboard:
 ![gui4.jpg](pictures/gui4.jpg)
 
-Admin Dashboard & Show Window:
+### Admin Dashboard & Show Window:
 ![gui5.jpg](pictures/gui5.jpg)
 
-Employee Creation Wizard:
+### Employee Creation Wizard:
 ![gui6.png](pictures/gui6.png)
 
-Employee Updation Wizard:
+### Employee Updation Wizard:
 ![gui7.png](pictures/gui7.png)
 
 ## GUI Windows' Flow
