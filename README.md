@@ -3,7 +3,7 @@ A Payroll Management System which works as a powerful and efficient tool in hold
 This project collects data of each employee in a particular organization and efficiently uses a Database for storing, updating, deleting and retrieving the required data (CRUD Operations).
 
 ## Technology
-The front-end GUI is built using TKinter module of Pyhton and for the back-end Database to store all the info, a Oracle RDBMS (Oracle Database 18c Express Edition) is used. 
+The front-end GUI is built using TKinter module of Python and for the back-end Database to store all the info, a Oracle RDBMS (Oracle Database 18c Express Edition) is used. 
 
 ## How to USE Eazy Payroll
 1. Run the below command:
