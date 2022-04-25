@@ -1,5 +1,8 @@
 '''
 Eazy Payroll 1.0
+DBMS Project Sem 2 by:
+    S Gopi
+    Kaushik
 
 This is GUI based based application used to document
 and manage employee's payroll, actually this only 
@@ -106,4 +109,4 @@ def connect_database():
         con.close()
 
 if __name__ == '__main__':
-    connect_database()
+    connect_database()  
